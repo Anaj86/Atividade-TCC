@@ -1,0 +1,38 @@
+{
+  "name": "conect60",
+  "version": "2.0.0",
+  "description": "Conect60+ — exercícios para a terceira idade (site + API + banco de dados)",
+  "main": "src/server.js",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "prisma studio",
+    "db:sql": "prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script",
+    "setup": "npm run db:push && npm run db:seed",
+    "deploy": "npm run db:push && npm run db:seed && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "dotenv": "^18.0.10",
+    "express": "5.3.0",
+    "google-auth-library": "^11.3.4"
+  },
+  "devDependencies": {
+    "cypress": "^16.3.0",
+    "jest": "^30.5.2",
+    "nodemon": "3.1.14",
+    "prisma": "6.19.3"
+  },
+  "type": "commonjs"
+}

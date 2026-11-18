@@ -1,0 +1,5 @@
+# O Caddy recebe as visitas em https://SEU-DOMINIO, cuida do certificado e repassa para o site.
+{$DOMINIO} {
+	encode gzip
+	reverse_proxy app:3000
+}

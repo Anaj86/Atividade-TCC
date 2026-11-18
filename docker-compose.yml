@@ -1,0 +1,67 @@
+# Sobe tudo de uma vez: MySQL + site/API (+ HTTPS automático com o Caddy, opcional).
+#
+#   Teste no computador:   docker compose up -d --build          -> http://localhost:3000
+#   Servidor (VPS):        docker compose --profile https up -d --build
+#
+# Preencha no .env: DB_SENHA, ADMIN_TELEFONE, ADMIN_SENHA, GOOGLE_CLIENT_ID e, no servidor, DOMINIO, SITE_URL e NODE_ENV=production
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_SENHA:?Defina DB_SENHA no .env}
+      MYSQL_DATABASE: conect60
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - dados_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      DATABASE_URL: mysql://root:${DB_SENHA}@db:3306/conect60
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      SITE_URL: ${SITE_URL:-}
+      ADMIN_NOME: ${ADMIN_NOME:-Administração Conect60+}
+      ADMIN_TELEFONE: ${ADMIN_TELEFONE:-}
+      ADMIN_SENHA: ${ADMIN_SENHA:-}
+      UPLOAD_DIR: /app/uploads
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
+    volumes:
+      - videos_aulas:/app/uploads
+    ports:
+      - "3000:3000"
+
+  # HTTPS automático (certificado gratuito). Só sobe com:  --profile https
+  caddy:
+    image: caddy:2
+    profiles: ["https"]
+    restart: unless-stopped
+    depends_on:
+      - app
+    environment:
+      DOMINIO: ${DOMINIO:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_dados:/data
+      - caddy_config:/config
+
+volumes:
+  dados_mysql:
+  videos_aulas:
+  caddy_dados:
+  caddy_config:

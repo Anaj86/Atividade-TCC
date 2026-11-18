@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel da administração | Conect60+</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+.adm{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1rem,4vw,2.5rem) 4rem}
+.adm-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 1.5rem}
+.adm-tabs button[aria-selected=true]{background:var(--ink);border-color:var(--ink)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;list-style:none;padding:0;margin:0}
+.cards li{background:#fff;border-radius:var(--r);padding:1rem 1.2rem;box-shadow:0 2px 10px rgba(18,52,58,.08)}
+.cards b{display:block;font-size:2rem;color:var(--teal-d);line-height:1.2}
+.tbl-wrap{overflow-x:auto;background:#fff;border-radius:var(--r);box-shadow:0 2px 10px rgba(18,52,58,.08)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:.65rem .8rem;border-bottom:1px solid #e3ecec;vertical-align:top}
+th{background:var(--mist);white-space:nowrap}
+td .btn{padding:.35rem .9rem;margin:.1rem .2rem .1rem 0}
+.tagx{display:inline-block;padding:.05rem .5rem;border-radius:6px;font-size:.78rem;font-weight:700;background:#dce9ff;color:#1d4fa8}
+.tagx.ok{background:#d7f5df;color:#12602c}.tagx.warn{background:#fff0c2;color:#7a5200}.tagx.off{background:#f6d6d3;color:#8a1c14}
+.codigo{font-size:1.6rem;font-weight:800;letter-spacing:.2em;color:var(--teal-d)}
+.msg{white-space:pre-wrap;max-width:46ch}
+.gate{max-width:520px;margin:4rem auto;text-align:center}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="/">Conect60+</a>
+  <nav class="top-actions"><a class="btn btn-sm btn-outline" href="/">Voltar ao site</a></nav>
+</header>
+<main class="adm" id="adm">
+  <div class="gate" id="gate"><h1>Painel da administração</h1><p id="gate-msg">Carregando…</p></div>
+  <div id="painel" hidden>
+    <h1>Painel da administração</h1>
+    <div class="adm-tabs" role="tablist" aria-label="Seções do painel">
+      <button class="btn btn-sm" role="tab" data-tab="resumo">Resumo</button>
+      <button class="btn btn-sm" role="tab" data-tab="usuarios">Usuários</button>
+      <button class="btn btn-sm" role="tab" data-tab="aulas">Aulas</button>
+      <button class="btn btn-sm" role="tab" data-tab="mensagens">Mensagens</button>
+      <button class="btn btn-sm" role="tab" data-tab="senhas">Pedidos de senha</button>
+      <button class="btn btn-sm" role="tab" data-tab="avaliacoes">Avaliações</button>
+    </div>
+    <section id="conteudo" aria-live="polite"></section>
+  </div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="admin.js"></script>
+</body>
+</html>

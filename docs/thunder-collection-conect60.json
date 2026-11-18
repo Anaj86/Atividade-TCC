@@ -1,0 +1,14 @@
+# Thunder Client API Documentation
+
+## Collection: Conect60+ API
+
+**Base URL:** `http://localhost:3000`
+
+### Requests (No Folder)
+
+### GET /api/rota-inexistente
+- **Name**: teste
+
+
+---
+
